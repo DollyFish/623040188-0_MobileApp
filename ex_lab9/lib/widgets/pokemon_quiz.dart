@@ -1,6 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:ex_lab9/main.dart';
+
+class TapChoiceBox extends StatefulWidget {
+  final String name;
+  final Color color;
+  final bool answer;
+  const TapChoiceBox(
+      {Key? key, required this.name, required this.color, required this.answer})
+      : super(key: key);
+
+  @override
+  _TapChoiceBoxState createState() => _TapChoiceBoxState();
+}
+
+class _TapChoiceBoxState extends State<TapChoiceBox> {
+  bool _active = false;
+  Color _activecolor = Colors.red;
+  String _activetext = "Your score is 0";
+
+  void _handleTop() {
+    setState(() {
+      _active = !_active;
+    });
+    if (widget.answer == true) {
+      _activecolor = Colors.green;
+      _activetext = "Your score is 1";
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+        onTap: () {
+          _handleTop();
+        },
+        child: Container(
+          padding: const EdgeInsets.all(3.0),
+          margin: const EdgeInsets.all(10.0),
+          color: _active ? _activecolor : widget.color,
+          child: Padding(
+            padding:
+                const EdgeInsets.only(top: 6, left: 6, right: 6, bottom: 6),
+            child: Text(
+              widget.name,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+          ),
+        ));
+  }
+}
 
 class PokemonQuiz extends StatefulWidget {
   const PokemonQuiz({Key? key, required this.num, required this.info})
@@ -29,7 +80,7 @@ class _PokemonQuizState extends State<PokemonQuiz> {
   late Color color4;
   late bool answer4;
 
-  bool previous = false;
+  bool previous = true;
   Widget? nextPokemon;
 
   @override
@@ -50,7 +101,7 @@ class _PokemonQuizState extends State<PokemonQuiz> {
     color4 = widget.info[widget.num]["c4_color"];
     answer4 = widget.info[widget.num]["c4_answer"];
     if (widget.num > 1 && widget.num <= widget.info.length) {
-      previous = true;
+      previous = false;
     }
     if (widget.num < widget.info.length) {
       nextPokemon = PokemonQuiz(num: widget.num + 1, info: widget.info);
@@ -119,27 +170,50 @@ class _PokemonQuizState extends State<PokemonQuiz> {
                 ],
               ),
               Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Visibility(
-                      visible: previous,
-                      child: ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: const Text("Previous"),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IgnorePointer(
+                        ignoring: previous,
+                        child: Opacity(
+                          opacity: previous ? 0 : 1,
+                          child: Container(
+                            width: 90,
+                            child: ElevatedButton(
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: const Text("Previous"),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    Visibility(
-                      visible: nextPokemon != null,
-                      child: ElevatedButton(
-                        onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    nextPokemon ?? Container())),
-                        child: const Text("Next"),
+                      Visibility(
+                        child: Container(
+                          width: 90,
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.pushNamed(context, '/'),
+                            child: const Text("Home"),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      IgnorePointer(
+                        ignoring: nextPokemon == null,
+                        child: Opacity(
+                          opacity: nextPokemon == null ? 0 : 1,
+                          child: Container(
+                            width: 90,
+                            child: ElevatedButton(
+                              onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          nextPokemon ?? Container())),
+                              child: const Text("Next"),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

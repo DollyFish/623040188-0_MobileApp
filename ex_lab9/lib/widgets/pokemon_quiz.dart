@@ -5,8 +5,15 @@ class TapChoiceBox extends StatefulWidget {
   final String name;
   final Color color;
   final bool answer;
+  final int numpage;
+  final Map<dynamic, dynamic> info;
   const TapChoiceBox(
-      {Key? key, required this.name, required this.color, required this.answer})
+      {Key? key,
+      required this.name,
+      required this.color,
+      required this.answer,
+      required this.numpage,
+      required this.info})
       : super(key: key);
 
   @override
@@ -16,7 +23,7 @@ class TapChoiceBox extends StatefulWidget {
 class _TapChoiceBoxState extends State<TapChoiceBox> {
   bool _active = false;
   Color _activecolor = Colors.red;
-  String _activetext = "Your score is 0";
+  String _activetext = "Sorry you miss it";
 
   void _handleTop() {
     setState(() {
@@ -28,11 +35,42 @@ class _TapChoiceBoxState extends State<TapChoiceBox> {
     }
   }
 
+  void _ShowDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Score!"),
+            content: Text(_activetext),
+            actions: <Widget>[
+              ElevatedButton(onPressed: _checkpress, child: Text('Ok'))
+            ],
+          );
+        });
+  }
+
+  void _checkpress() {
+    if (widget.answer == true) {
+      if (widget.numpage < widget.info.length) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                PokemonQuiz(num: widget.numpage + 1, info: widget.info)));
+      } else {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const RestartScreen()));
+      }
+    } else {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const RestartScreen()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
           _handleTop();
+          _ShowDialog(context);
         },
         child: Container(
           padding: const EdgeInsets.all(3.0),
@@ -50,6 +88,20 @@ class _TapChoiceBoxState extends State<TapChoiceBox> {
             ),
           ),
         ));
+  }
+}
+
+class RestartScreen extends StatelessWidget {
+  const RestartScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+          child: ElevatedButton(
+              onPressed: () => Navigator.pushNamed(context, '/'),
+              child: Text('Restart'))),
+    );
   }
 }
 
@@ -103,8 +155,11 @@ class _PokemonQuizState extends State<PokemonQuiz> {
     if (widget.num > 1 && widget.num <= widget.info.length) {
       previous = false;
     }
+
     if (widget.num < widget.info.length) {
       nextPokemon = PokemonQuiz(num: widget.num + 1, info: widget.info);
+    } else {
+      nextPokemon = const RestartScreen();
     }
   }
 
@@ -139,6 +194,8 @@ class _PokemonQuizState extends State<PokemonQuiz> {
                       name: choice1,
                       color: color1,
                       answer: answer1,
+                      numpage: widget.num,
+                      info: widget.info,
                     ),
                   ),
                   Expanded(
@@ -146,6 +203,8 @@ class _PokemonQuizState extends State<PokemonQuiz> {
                       name: choice2,
                       color: color2,
                       answer: answer2,
+                      numpage: widget.num,
+                      info: widget.info,
                     ),
                   ),
                 ],
@@ -158,6 +217,8 @@ class _PokemonQuizState extends State<PokemonQuiz> {
                       name: choice3,
                       color: color3,
                       answer: answer3,
+                      numpage: widget.num,
+                      info: widget.info,
                     ),
                   ),
                   Expanded(
@@ -165,6 +226,8 @@ class _PokemonQuizState extends State<PokemonQuiz> {
                       name: choice4,
                       color: color4,
                       answer: answer4,
+                      numpage: widget.num,
+                      info: widget.info,
                     ),
                   ),
                 ],

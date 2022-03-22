@@ -168,7 +168,8 @@ class _PokemonQuizState extends State<PokemonQuiz> {
     return Scaffold(
       appBar: screenW <= 600
           ? AppBar(
-              title: const Text("MobileApp"), backgroundColor: Colors.redAccent)
+              title: Text("Question ${widget.num}"),
+              backgroundColor: Colors.redAccent)
           : null,
       body: Center(
         child: Container(

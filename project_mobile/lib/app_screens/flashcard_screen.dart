@@ -611,7 +611,9 @@ class _CardAppState extends State<CardApp> {
           Provider.of<CountScore>(context, listen: false)
               .GetCardData(widget.flashcardslist);
           Provider.of<CountScore>(context, listen: false).EndFlashCard();
+
           Provider.of<CountScore>(context, listen: false).saveFile();
+
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => EndCard()));
         } else {

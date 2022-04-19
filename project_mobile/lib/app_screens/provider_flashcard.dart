@@ -191,13 +191,11 @@ class CountScore extends ChangeNotifier {
           });
     } else {
       var lst_word = AllLanguagelist[NameDeck];
-      AllLanguagelist.keys.forEach((element) {print(element);});
-      print(AllLanguagelist[NameDeck]);
       lst_word.add([FrontCardDeck, BackCardDeck, "white"]);
       AllLanguagelist[NameDeck] = lst_word;
       FrontCardDeck = "";
       BackCardDeck = "";
-      print("success");
+
       if (MaxCard > 0) {
         Navigator.pushNamed(context, '/AddNewCardForDeck');
       } else {
@@ -266,8 +264,7 @@ class CountScore extends ChangeNotifier {
           });
     } else {
       AllLanguagelist[NameDeck] = [];
-      AllLanguagelist.keys.forEach((element) {print(element);});
-      print(AllLanguagelist[NameDeck]);
+
       print("Success");
       UpdateDeck();
       Navigator.pushNamed(context, '/AddNewCardForDeck');
@@ -323,23 +320,20 @@ class CountScore extends ChangeNotifier {
   String picture = "";
   String TopEndFlashcardtext = "";
   void EndFlashCard() {
-    if((Hard/LenthDeck)*100 > 60){
+    if ((Hard / LenthDeck) * 100 > 60) {
       picture = "images/hard.png";
       TopEndFlashcardtext = "Don't give up";
       EndFlashcardtext = "You should try more";
-    }
-    else if((Good/LenthDeck)*100 > 60){
+    } else if ((Good / LenthDeck) * 100 > 60) {
       picture = "images/good.png";
       TopEndFlashcardtext = "Nice One";
       EndFlashcardtext = "Almost done!";
-    }
-    else if((Easy/LenthDeck)*100 > 60){
+    } else if ((Easy / LenthDeck) * 100 > 60) {
       picture = "images/easy.png";
       TopEndFlashcardtext = "Congratulations";
       EndFlashcardtext = "You did great!!!";
-    }
-    else{
-      picture ="images/nicetry.png";
+    } else {
+      picture = "images/nicetry.png";
       TopEndFlashcardtext = "Still Good";
       EndFlashcardtext = "Don't give up";
     }

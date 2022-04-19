@@ -1,13 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'app_screens/flashcard_screen.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 import '/app_screens/provider_flashcard.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
 
 void main() {
   runApp(
@@ -137,7 +132,6 @@ class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<CountScore>(builder: (context, provider, child) {
-      provider.writeFile();
       provider.readFile();
 
       return Scaffold(
@@ -146,7 +140,9 @@ class StartPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Image(image: AssetImage('images/Logo.png'),),
+              const Image(
+                image: AssetImage('images/Logo.png'),
+              ),
               Container(
                 margin: const EdgeInsets.only(top: 0, bottom: 75),
                 child: const Text("",
@@ -164,7 +160,6 @@ class StartPage extends StatelessWidget {
                       color: Colors.white,
                       child: OutlineButton(
                           onPressed: () {
-                            print(provider.AllLanguagelist);
                             provider.UpdateDeck();
                             Navigator.pushNamed(context, '/MainScreen');
                           },
@@ -199,7 +194,7 @@ class _DeletePageState extends State<DeletePage> {
         backgroundColor: Colors.orange[800],
         appBar: AppBar(
           backgroundColor:
-          Colors.orange, //lid/app_screes/RRR.png"),radius: 25,)
+              Colors.orange, //lid/app_screes/RRR.png"),radius: 25,)
           title: Row(
             children: const [
               Text("Delete Deck"),
@@ -208,66 +203,65 @@ class _DeletePageState extends State<DeletePage> {
         ),
         body: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(bottom: 225),
-                  child: const Text("Delete Deck",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.w700)),
-                ),
-                Container(
-                    height: 40,
-                    width: 300,
-                    margin: const EdgeInsets.only(bottom: 225),
-                    decoration: const BoxDecoration(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 225),
+              child: const Text("Delete Deck",
+                  style: TextStyle(
                       color: Colors.white,
-                    ),
-                    child: Center(
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton(
-                            focusColor: Colors.black,
-                            dropdownColor: Colors.white,
-                            value: widget.dropdownvalue,
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                widget.dropdownvalue = newValue!;
-                              });
-                            },
-                            items: items.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                          ),
-                        ))),
-                SizedBox(
-                    height: 50,
-                    width: 300,
-                    child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        color: Colors.white,
-                        child: OutlineButton(
-                            onPressed: () {
-                              provider.DeleteDeck(context, widget.dropdownvalue);
-                            },
-                            child: const Text('Delete',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700)))))
-              ],
-            )),
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700)),
+            ),
+            Container(
+                height: 40,
+                width: 300,
+                margin: const EdgeInsets.only(bottom: 225),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Center(
+                    child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    focusColor: Colors.black,
+                    dropdownColor: Colors.white,
+                    value: widget.dropdownvalue,
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        widget.dropdownvalue = newValue!;
+                      });
+                    },
+                    items: items.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                  ),
+                ))),
+            SizedBox(
+                height: 50,
+                width: 300,
+                child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    color: Colors.white,
+                    child: OutlineButton(
+                        onPressed: () {
+                          provider.DeleteDeck(context, widget.dropdownvalue);
+                        },
+                        child: const Text('Delete',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700)))))
+          ],
+        )),
       );
     });
   }
 }
-
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -291,7 +285,8 @@ class _MyAppState extends State<MyApp> {
                 dropdownvalue: provider.namecard[0],
               ),
           '/AddNewCardForDeck': (context) => AddNewCardForDeck(),
-          '/DeletePage': (context) => DeletePage(dropdownvalue: provider.namecard[0]),
+          '/DeletePage': (context) =>
+              DeletePage(dropdownvalue: provider.namecard[0]),
         },
         title: "Basic list View Demo",
       );

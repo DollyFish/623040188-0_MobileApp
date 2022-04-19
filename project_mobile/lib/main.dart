@@ -137,7 +137,6 @@ class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<CountScore>(builder: (context, provider, child) {
-      provider.writeFile();
       provider.readFile();
 
       return Scaffold(

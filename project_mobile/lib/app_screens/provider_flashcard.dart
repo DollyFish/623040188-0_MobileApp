@@ -308,6 +308,7 @@ class CountScore extends ChangeNotifier {
         for (var card in value) {
           flashcard.add(Flashcard(card[0], card[1], card[2]));
         }
+        flashcard.shuffle();
       }
     });
   }
